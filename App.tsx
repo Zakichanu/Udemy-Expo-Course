@@ -1,93 +1,35 @@
 import { SetStateAction, useState } from 'react';
-import { FlatList, StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { FlatList, StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Button } from 'react-native';
 import Header from './components/Header';
 
 export default function App() {
-  const [todos, setTodos] = useState(
-    [
-      {
-        userId: 1,
-        id: 1,
-        title: "delectus aut autem",
-        completed: false
-      },
-      {
-        userId: 1,
-        id: 2,
-        title: "quis ut nam facilis et officia qui",
-        completed: false
-      },
-      {
-        userId: 1,
-        id: 3,
-        title: "fugiat veniam minus",
-        completed: false
-      },
-      {
-        userId: 1,
-        id: 4,
-        title: "et porro tempora",
-        completed: true
-      },
-      {
-        userId: 1,
-        id: 5,
-        title: "laboriosam mollitia et enim quasi adipisci quia provident illum",
-        completed: false
-      },
-      {
-        userId: 1,
-        id: 6,
-        title: "qui ullam ratione quibusdam voluptatem quia omnis",
-        completed: false
-      },
-      {
-        userId: 1,
-        id: 7,
-        title: "illo expedita consequatur quia in",
-        completed: false
-      },
-      {
-        userId: 1,
-        id: 8,
-        title: "quo adipisci enim quam ut ab",
-        completed: true
-      },
-      {
-        userId: 1,
-        id: 9,
-        title: "molestiae perspiciatis ipsa",
-        completed: false
-      },
-      {
-        userId: 1,
-        id: 10,
-        title: "illo est ratione doloremque quia maiores aut",
-        completed: true
-      }
-    ]
-  );
+  const [todos, setTodos] = useState([{ id: 1, title: 'Task 1', completed: false }, { id: 2, title: 'Task 2', completed: false }, { id: 3, title: 'Task 3', completed: true }, { id: 4, title: 'Task 4', completed: false }]);
+  const [newTask, setNewTask] = useState('');
 
   const pressHandler = (id: number) => {
-    // pass completed to !completed
-    setTodos(prevTodos => {
-      return prevTodos.map(todo => {
-        
-        if (todo.id === id) {
-          return { ...todo, completed: !todo.completed }
-        }
-        return todo;
-      })
-    })
+    setTodos(prevTodos => prevTodos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo));
   }
+
+  const addTask = () => {
+    if (newTask.trim()) {
+      setTodos(prevTodos => [...prevTodos, { id: prevTodos.length + 1, title: newTask, completed: false }]);
+      setNewTask('');
+    }
+  }
+
+
 
   return (
     <SafeAreaView style={styles.container}>
       <Header />
+
+      <View style={styles.inputContainer}>
+        <TextInput style={styles.input} value={newTask
+        } onChangeText={setNewTask}/>
+        <Button title="Add task" onPress={() => addTask()} />
+      </View>
       
-
-
-      {/* <FlatList
+      <FlatList
         data={todos}
         renderItem={({ item }) =>
           <TouchableOpacity
@@ -99,7 +41,7 @@ export default function App() {
         }
         keyExtractor={item => item.id.toString()}
         numColumns={3}
-      /> */}
+      />
 
     </SafeAreaView>
   );
@@ -116,19 +58,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     padding: 10,
     margin: 10,
-    width: 100,
-    borderRadius: 10
+    borderRadius: 5,
+    flex: 1,
+    justifyContent: 'center',
   },
-  appBar: {
-    // on top of the screen
-    position: 'absolute',
-    top: 50,
-    // font color
-    color: 'black',
-    backgroundColor: 'white',
+  inputContainer: {
     padding: 10,
-    margin: 10,
-    width: 1000,
-    borderRadius: 10
-  }
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    paddingLeft: 10,
+  },
 });

@@ -4,7 +4,7 @@ import { View, StyleSheet, Text } from "react-native";
 const Header = () => {
     return (
         <View style={styles.appBar}>
-            <Text style={styles.title}>CKMobile tasks</Text>
+            <Text style={styles.title}>Zako Todo List</Text>
         </View>
     );
 }
